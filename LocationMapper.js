@@ -10,7 +10,8 @@ let userLon;
 navigator.geolocation.watchPosition(function(pos) {
     userLat = pos.coords.latitude;
     userLon = pos.coords.longitude;
-    userGEO = {"geometry": {"type": "Point", "coordinates": [userLon, userLat]}, "type": "Feature", "properties": {}}
+    userGEO = {"geometry": {"type": "Point", "coordinates": [userLon, userLat]}, "type": "Feature", "properties": {}};
+    console.log('position updated')
 });
 
 // load map
