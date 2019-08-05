@@ -1,7 +1,7 @@
 {
     "name": "Quest Map",
     "short_name": "Map",
-    "start_url": ".",
+    "start_url": "/",
     "display": "standalone",
     "theme_color": "#3f51b5",
     "background_color": "#fff",
