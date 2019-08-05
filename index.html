@@ -4,11 +4,24 @@
     <meta charset='utf-8' />
     <title>Locate the user</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <meta name="theme-color" content="#db5945">
+    <meta http-equiv=”Refresh” content=”0;URL=https://www.Ingmarvdg.github.io” />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css' rel='stylesheet' />
     <link href="main.css" rel="stylesheet" />
+    <link rel="manifest" href="./manifest.webmanifest">
 </head>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function(){
+            navigator.serviceWorker.register('sw.js', {
+                scope: '/',
+            });
+        });
+    }
+</script>
 <body>
+<noscript>This website requires JavaScript.</noscript>
 
 <div id='map'></div>
 
