@@ -28,12 +28,13 @@ map.on('load', function () {
     // periodical events
     window.setInterval(function() {
         map.getSource('user').setData(userGEO);
-        map.flyTo({center: [userLon, userLat] , zoom: defaultZoom})
+        //map.flyTo({center: [userLon, userLat] , zoom: defaultZoom})
     }, 100);
 
     // markers
     let size = 100;
     let checkDot = newDot(size);
+    let finesDot =
     map.addImage('pulsing-dot', checkDot, { pixelRatio: 2 });
 
     // map layers
@@ -46,6 +47,53 @@ map.on('load', function () {
             "icon-image": "pulsing-dot"
         }
     });
-    map.addSource('pointsofinterest', {type: 'geojson', data: pointsOfInterest})
+
+    // add source and layers for points of interest.
+    map.loadImage('./fine.png', function(error, image){
+        if (error) throw error;
+        map.addImage('fine', image)
+    });
+
+    map.loadImage('./module.png', function(error, image){
+        if (error) throw error;
+        map.addImage('module', image)
+    });
+
+    map.loadImage('./loi.png', function(error, image){
+        if (error) throw error;
+        map.addImage('loi', image)
+    });
+
+    map.loadImage('./event2.png', function(error, image){
+        if (error) throw error;
+        map.addImage('event', image)
+    });
+
+    map.addSource('locationpoints', {
+        type: 'geojson',
+        data: './GeoJason.geojson'
+    });
+
+    map.addLayer({
+        "id": "locations",
+        "type": "symbol",
+        "source": "locationpoints",
+        "layout": {
+            "icon-offset": [14,-154],
+            "icon-image": "{Icon-image}",
+            "icon-allow-overlap": true,
+            "icon-ignore-placement": true,
+            "icon-padding": 0,
+            "icon-size": 0.38,
+
+            "text-size": 10,
+            "text-font": ["Meta Offc Pro Medium","Arial Unicode MS Regular"],
+            "text-allow-overlap": true,
+            "text-offset": [1,0],
+            "text-anchor": "left",
+            "text-field": "{icon_image}",
+            "text-rotate": 270
+        }
+    })
 });
 

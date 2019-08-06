@@ -4,7 +4,7 @@ const staticAssets = [
     './index.html',
     './main.css',
     './LocationMapper.js',
-    './UserMarker.js',
+    './Markers.js',
     './manifest.webmanifest',
 ];
 
