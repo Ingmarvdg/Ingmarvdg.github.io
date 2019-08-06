@@ -23,18 +23,29 @@ let map = new mapboxgl.Map({
     zoom: defaultZoom // starting zoom
 });
 
-
 map.on('load', function () {
     // periodical events
     window.setInterval(function() {
         map.getSource('user').setData(userGEO);
         //map.flyTo({center: [userLon, userLat] , zoom: defaultZoom})
-    }, 100);
+
+        // radius in kilometers
+        let radius = 0.5;
+
+        let bbox = calculateBBox(userLat, userLon, radius);
+
+        let relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations']});
+        console.log(relevantLocations);
+        let filter = relevantLocations.reduce(function(memo, relevantLocations) {
+            memo.push(relevantLocations.properties.Location);
+            return memo;
+        }, ['in', 'Location']);
+        map.setFilter("locations-highlighted", filter);
+    }, 250);
 
     // markers
     let size = 100;
     let checkDot = newDot(size);
-    let finesDot =
     map.addImage('pulsing-dot', checkDot, { pixelRatio: 2 });
 
     // map layers
@@ -95,5 +106,26 @@ map.on('load', function () {
             "text-rotate": 270
         }
     })
+
+    map.addLayer({
+        'id': 'locations-highlighted',
+        'type': 'symbol',
+        'source': 'locationpoints',
+        'layout': {
+            'icon-image': "fine"
+        },
+        "filter": ["in", "Location", ""]
+    })
+
+
 });
+
+// takes user location+radius and returns pixel values of bound box coordinates
+function calculateBBox(userLat, userLon, radius){
+    const latLngKilometers = 111.2;
+    let latLngOffset = radius/latLngKilometers;
+    let northEast = map.project([userLon + latLngOffset, userLat - latLngOffset]);
+    let southWest = map.project([userLon - latLngOffset, userLat - latLngOffset]);
+    return [southWest, northEast];
+}
 
