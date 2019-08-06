@@ -5,6 +5,7 @@ let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "t
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat;
 let userLon;
+let pointsOfInterest;
 
 // update user location by watching its position
 navigator.geolocation.watchPosition(function(pos) {
@@ -28,7 +29,7 @@ map.on('load', function () {
     window.setInterval(function() {
         map.getSource('user').setData(userGEO);
         map.flyTo({center: [userLon, userLat] , zoom: defaultZoom})
-    }, 1000);
+    }, 100);
 
     // markers
     let size = 100;
@@ -45,5 +46,6 @@ map.on('load', function () {
             "icon-image": "pulsing-dot"
         }
     });
+    map.addSource('pointsofinterest', {type: 'geojson', data: pointsOfInterest})
 });
 
