@@ -75,11 +75,21 @@ map.on('load', function () {
     });
 
     map.addLayer({
+        "id": "markers",
+        "type": "circle",
+        "source": "locationpoints",
+        "paint": {
+            "circle-radius": 20,
+            "circle-color": "#39a843",
+            "circle-opacity": 1
+        }
+    });
+
+    map.addLayer({
         "id": "locations",
         "type": "symbol",
         "source": "locationpoints",
         "layout": {
-            "icon-offset": [14,-154],
             "icon-image": "{Icon-image}",
             "icon-allow-overlap": true,
             "icon-ignore-placement": true,
@@ -94,6 +104,9 @@ map.on('load', function () {
             "text-field": "{icon_image}",
             "text-rotate": 270
         }
-    })
+    });
+
+
+
 });
 
