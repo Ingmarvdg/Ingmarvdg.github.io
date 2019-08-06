@@ -5,7 +5,9 @@ let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "t
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat;
 let userLon;
-let pointsOfInterest;
+let actionRadius = 1;
+let userMarkerSize = 100;
+let userDot = newDot(userMarkerSize);
 
 // update user location by watching its position
 navigator.geolocation.watchPosition(function(pos) {
@@ -26,40 +28,24 @@ let map = new mapboxgl.Map({
 map.on('load', function () {
     // periodical events
     window.setInterval(function() {
+        // update user location with geodata
         map.getSource('user').setData(userGEO);
-        //map.flyTo({center: [userLon, userLat] , zoom: defaultZoom})
 
-        // radius in kilometers
-        let radius = 0.5;
-
-        let bbox = calculateBBox(userLat, userLon, radius);
-
-        let relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations']});
+        // filter locations within radius of user
+        let bbox = calculateBBox(userLat, userLon, actionRadius);
+        let relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations-target']});
         console.log(relevantLocations);
         let filter = relevantLocations.reduce(function(memo, relevantLocations) {
             memo.push(relevantLocations.properties.Location);
             return memo;
         }, ['in', 'Location']);
         map.setFilter("locations-highlighted", filter);
-    }, 250);
 
-    // markers
-    let size = 100;
-    let checkDot = newDot(size);
-    map.addImage('pulsing-dot', checkDot, { pixelRatio: 2 });
+    }, 500);
 
-    // map layers
-    map.addSource('user', { type: 'geojson', data: userGEO });
-    map.addLayer({
-        "id": "user",
-        "type": "symbol",
-        "source": "user",
-        "layout": {
-            "icon-image": "pulsing-dot"
-        }
-    });
+    // load and add images
+    map.addImage('pulsing-dot', userDot, { pixelRatio: 2 });
 
-    // add source and layers for points of interest.
     map.loadImage('./fine.png', function(error, image){
         if (error) throw error;
         map.addImage('fine', image)
@@ -80,9 +66,32 @@ map.on('load', function () {
         map.addImage('event', image)
     });
 
+    // add data sources
+    map.addSource('user', { type: 'geojson', data: userGEO });
     map.addSource('locationpoints', {
         type: 'geojson',
         data: './GeoJason.geojson'
+    });
+
+    // add map layers
+    map.addLayer({
+        'id': 'locations-target',
+        'type': 'circle',
+        'source': 'locationpoints',
+        "paint": {
+            "circle-radius": 1,
+            "circle-color": "#000000",
+            "circle-opacity": 1
+        }
+    });
+
+    map.addLayer({
+        "id": "user",
+        "type": "symbol",
+        "source": "user",
+        "layout": {
+            "icon-image": "pulsing-dot"
+        }
     });
 
     map.addLayer({
@@ -94,6 +103,18 @@ map.on('load', function () {
             "circle-color": "#39a843",
             "circle-opacity": 1
         }
+    });
+
+    map.addLayer({
+        'id': 'locations-highlighted',
+        'type': 'circle',
+        'source': 'locationpoints',
+        "paint": {
+            "circle-radius": 20,
+            "circle-color": "#a80013",
+            "circle-opacity": 1
+        },
+        "filter": ["in", "Location", ""]
     });
 
     map.addLayer({
@@ -115,31 +136,19 @@ map.on('load', function () {
             "text-field": "{icon_image}",
             "text-rotate": 270
         }
-    })
-
-    map.addLayer({
-        'id': 'locations-highlighted',
-        'type': 'symbol',
-        'source': 'locationpoints',
-        'layout': {
-            'icon-image': "fine"
-        },
-        "filter": ["in", "Location", ""]
-    })
-
-
     });
-
-
-
 });
+
+
 
 // takes user location+radius and returns pixel values of bound box coordinates
 function calculateBBox(userLat, userLon, radius){
     const latLngKilometers = 111.2;
     let latLngOffset = radius/latLngKilometers;
+    console.log(userLon - latLngOffset, userLat - latLngOffset);
     let northEast = map.project([userLon + latLngOffset, userLat - latLngOffset]);
-    let southWest = map.project([userLon - latLngOffset, userLat - latLngOffset]);
+    let southWest = map.project([userLon - latLngOffset, userLat + latLngOffset]);
+    console.log(southWest, northEast);
     return [southWest, northEast];
 }
 
