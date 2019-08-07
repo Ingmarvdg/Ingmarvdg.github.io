@@ -69,6 +69,33 @@ map.on('load', function () {
         console.log("Update information: actionRadius is %d, ", actionRadius);
     }, 250);
 
+    // load and add images
+    map.loadImage('./IntelIn.png', function(error,image){
+        if(error) throw error;
+        map.addImage('loi', image)
+    });
+
+    map.loadImage('./IntelIn.png', function(error,image){
+        if(error) throw error;
+        map.addImage('event', image)
+    });
+
+    map.loadImage('./IntelIn.png', function(error,image){
+        if(error) throw error;
+        map.addImage('fine', image)
+    });
+
+    map.loadImage('./IntelOut.png', function(error,image){
+        if(error) throw error;
+        map.addImage('outside', image)
+    });
+
+    map.loadImage('./ActionsIn.png', function(error,image){
+        if(error) throw error;
+        map.addImage('module', image)
+    });
+
+
     // add data sources for user location and points of interest
     map.addSource('user', { type: 'geojson', data: userGEO });
     map.addSource('locationpoints', {
@@ -78,9 +105,9 @@ map.on('load', function () {
 
     // add map layers for points of interest coordinates and points of interest within user range
     map.addLayer({
-        'id': 'locations-target',
-        'type': 'circle',
-        'source': 'locationpoints',
+        "id": "locations-target",
+        "type": "circle",
+        "source": "locationpoints",
         "paint": {
             "circle-radius": 1,
             "circle-color": "#000000",
@@ -89,21 +116,42 @@ map.on('load', function () {
     });
 
     map.addLayer({
+        "id": "markers",
+        "type":"symbol",
+        "source": "locationpoints",
+        "layout":{
+            "icon-image": "outside",
+            "icon-allow-overlap":true,
+            "icon-ignore-placement":true,
+            "icon-padding":0,
+            "icon-size":0.3,
+
+            "text-size":10
+        }
+    });
+
+    map.addLayer({
         'id': 'locations-highlighted',
-        'type': 'circle',
-        'source': 'locationpoints',
-        "paint": {
-            "circle-radius": 20,
-            "circle-color": "#a80013",
-            "circle-opacity": 1
+        "type":"symbol",
+        "source": "locationpoints",
+        "layout":{
+            "icon-image": "{Icon-image}",
+            "icon-allow-overlap":true,
+            "icon-ignore-placement":true,
+            "icon-padding":0,
+            "icon-size":0.3,
+
+            "text-size":10
         },
         "filter": ["in", "Location", ""]
     });
 
+
+
     // allow for popup when clicking on marker
     map.on('click', function(e) {
         let features = map.queryRenderedFeatures(e.point, {
-            layers: ['data-police'] // replace this with the name of the layer
+            layers: ['markers'] // replace this with the name of the layer
         });
 
         if (!features.length) {
