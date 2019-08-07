@@ -5,7 +5,7 @@ let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "t
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat;
 let userLon;
-let userSpeed = 6; // variable for user speed, default is 6 meters per second, this is used if speed cannot be detected on device
+let userSpeed = 5; // variable for user speed, default is 6 meters per second, this is used if speed cannot be detected on device
 let actionRadius;
 let userMarkerSize = 100;
 let userDot = newDot(userMarkerSize);
@@ -22,7 +22,7 @@ navigator.geolocation.watchPosition(function(pos) {
         userSpeed = pos.coords.speed;
     }
     userGEO = {"geometry": {"type": "Point", "coordinates": [userLon, userLat]}, "type": "Feature", "properties": {}};
-    console.log('position updated')
+    console.log('position updated', userLat, userLon)
 },function() {
     console.log('couldnt get user location')
     }, geoLocationOptions
@@ -41,7 +41,10 @@ map.addControl(new mapboxgl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
     },
-    trackUserLocation: true
+    trackUserLocation: true,
+    fitBoundsOptions: {
+        maxZoom: getZoomFromSpeed(userSpeed, defaultZoom)
+    }
 }));
 
 map.on('load', function () {
@@ -49,8 +52,7 @@ map.on('load', function () {
     window.setInterval(function() {
         // update user location with geodata
         map.getSource('user').setData(userGEO);
-        //set zoom level based on speed
-        map.zoom = getZoomFromSpeed(userSpeed, defaultZoom);
+
         // set action radius based on speed
         actionRadius = getRadiusFromSpeed(userSpeed, responseTime);
         // filter locations within radius of user
@@ -65,8 +67,6 @@ map.on('load', function () {
     }, 250);
 
     // load and add images
-    map.addImage('pulsing-dot', userDot, { pixelRatio: 2 });
-
     map.loadImage('./fine.png', function(error, image){
         if (error) throw error;
         map.addImage('fine', image)
@@ -103,15 +103,6 @@ map.on('load', function () {
             "circle-radius": 1,
             "circle-color": "#000000",
             "circle-opacity": 1
-        }
-    });
-
-    map.addLayer({
-        "id": "user",
-        "type": "symbol",
-        "source": "user",
-        "layout": {
-            "icon-image": "pulsing-dot"
         }
     });
 
