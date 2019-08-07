@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+
+
 <head>
     <meta charset='utf-8' />
     <title>Quest Map</title>
@@ -9,6 +11,7 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.css' rel='stylesheet' />
     <link href="main.css" rel="stylesheet" />
     <link rel="manifest" href="./manifest.webmanifest">
+
 </head>
 <script>
     if ('serviceWorker' in navigator) {
@@ -18,6 +21,7 @@
             });
         });
     }
+
 </script>
 <body>
 <noscript>This website requires JavaScript.</noscript>
@@ -27,5 +31,11 @@
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js'></script>
 <script src="Markers.js"></script>
 <script src="LocationMapper.js"></script>
+
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+        crossorigin=""></script>
+
+
 </body>
 </html>

@@ -1,3 +1,5 @@
+
+
 // constants and variables
 const defaultLocation = [5.9795, 50.8882];
 const defaultZoom = 16;
@@ -18,7 +20,7 @@ navigator.geolocation.watchPosition(function(pos) {
 // load map
 let map = new mapboxgl.Map({
     container: 'map', // container id
-    style: 'mapbox://styles/mapbox/streets-v11',
+    style: 'mapbox://styles/ingmarvdg/cjz12ef7l00oy1cro517z0nzl',
     center: defaultLocation, // starting position
     zoom: defaultZoom // starting zoom
 });
@@ -86,38 +88,6 @@ map.on('load', function () {
     });
 
     map.addLayer({
-        "id": "markers",
-        "type": "circle",
-        "source": "locationpoints",
-        "paint": {
-            "circle-radius": 20,
-            "circle-color": "#39a843",
-            "circle-opacity": 1
-        }
-    });
-
-    map.addLayer({
-        "id": "locations",
-        "type": "symbol",
-        "source": "locationpoints",
-        "layout": {
-            "icon-image": "{Icon-image}",
-            "icon-allow-overlap": true,
-            "icon-ignore-placement": true,
-            "icon-padding": 0,
-            "icon-size": 0.38,
-
-            "text-size": 10,
-            "text-font": ["Meta Offc Pro Medium","Arial Unicode MS Regular"],
-            "text-allow-overlap": true,
-            "text-offset": [1,0],
-            "text-anchor": "left",
-            "text-field": "{icon_image}",
-            "text-rotate": 270
-        }
-    })
-
-    map.addLayer({
         'id': 'locations-highlighted',
         'type': 'symbol',
         'source': 'locationpoints',
@@ -128,11 +98,33 @@ map.on('load', function () {
     })
 
 
+    map.on('click', function(e) {
+        let features = map.queryRenderedFeatures(e.point, {
+            layers: ['data-police'] // replace this with the name of the layer
+        });
+
+        if (!features.length) {
+            return;
+        }
+
+        let feature = features[0];
+
+        let popup = new mapboxgl.Popup({ offset: [0, -15] })
+            .setLngLat(feature.geometry.coordinates)
+            .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
+            .addTo(map);
+
+
     });
 
+})
 
 
-});
+
+
+
+
+
 
 // takes user location+radius and returns pixel values of bound box coordinates
 function calculateBBox(userLat, userLon, radius){
