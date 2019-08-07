@@ -69,25 +69,6 @@ map.on('load', function () {
     }, 250);
 
     // load and add images
-    map.loadImage('./fine.png', function(error, image){
-        if (error) throw error;
-        map.addImage('fine', image)
-    });
-
-    map.loadImage('./module.png', function(error, image){
-        if (error) throw error;
-        map.addImage('module', image)
-    });
-
-    map.loadImage('./loi.png', function(error, image){
-        if (error) throw error;
-        map.addImage('loi', image)
-    });
-
-    map.loadImage('./event2.png', function(error, image){
-        if (error) throw error;
-        map.addImage('event', image)
-    });
 
     // add data sources
     map.addSource('user', { type: 'geojson', data: userGEO });
@@ -107,6 +88,7 @@ map.on('load', function () {
             "circle-opacity": 1
         }
     });
+
     map.addLayer({
         'id': 'locations-highlighted',
         'type': 'circle',
@@ -118,6 +100,7 @@ map.on('load', function () {
         },
         "filter": ["in", "Location", ""]
     });
+
     map.on('click', function(e) {
         let features = map.queryRenderedFeatures(e.point, {
             layers: ['data-police'] // replace this with the name of the layer
@@ -133,12 +116,7 @@ map.on('load', function () {
             .setLngLat(feature.geometry.coordinates)
             .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
             .addTo(map);
-
-
     });
-
-
-
 });
 
 
