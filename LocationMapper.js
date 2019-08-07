@@ -1,16 +1,13 @@
-
-
 // constants and variables
 const defaultLocation = [5.9795, 50.8882];
 const defaultZoom = 16;
+let currentZoom = defaultZoom;
 let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "type": "Feature", "properties": {}};
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat;
 let userLon;
 let userSpeed = 5; // variable for user speed, default is 6 meters per second, this is used if speed cannot be detected on device
 let actionRadius;
-let userMarkerSize = 100;
-let userDot = newDot(userMarkerSize);
 let geoLocationOptions = {enableHighAccuracy: true,
                             timeout: 5000,
                             maximumAge: 0};
@@ -30,7 +27,7 @@ navigator.geolocation.watchPosition(function(pos) {
     }, geoLocationOptions
 );
 
-// load map
+// initialize map
 let map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/ingmarvdg/cjz12ef7l00oy1cro517z0nzl',
@@ -38,25 +35,29 @@ let map = new mapboxgl.Map({
     zoom: defaultZoom // starting zoom
 });
 
-// add user location tracker
+// add user location marker
 map.addControl(new mapboxgl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
     },
     trackUserLocation: true,
     fitBoundsOptions: {
-        maxZoom: getZoomFromSpeed(userSpeed, defaultZoom)
+        maxZoom: currentZoom
     }
 }));
 
 map.on('load', function () {
     // periodical events
     window.setInterval(function() {
-        // update user location with geodata
+        // update user location with geo data
         map.getSource('user').setData(userGEO);
+
+        // update zoom level based on speed
+        currentZoom = getZoomFromSpeed(userSpeed, defaultZoom);
 
         // set action radius based on speed
         actionRadius = getRadiusFromSpeed(userSpeed, responseTime);
+
         // filter locations within radius of user
         let bbox = calculateBBox(userLat, userLon, actionRadius);
         let relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations-target']});
@@ -65,19 +66,17 @@ map.on('load', function () {
             return memo;
         }, ['in', 'Location']);
         map.setFilter("locations-highlighted", filter);
-
+        console.log("Update information: actionRadius is %d, ", actionRadius);
     }, 250);
 
-    // load and add images
-
-    // add data sources
+    // add data sources for user location and points of interest
     map.addSource('user', { type: 'geojson', data: userGEO });
     map.addSource('locationpoints', {
         type: 'geojson',
         data: './GeoJason.geojson'
     });
 
-    // add map layers
+    // add map layers for points of interest coordinates and points of interest within user range
     map.addLayer({
         'id': 'locations-target',
         'type': 'circle',
@@ -85,7 +84,7 @@ map.on('load', function () {
         "paint": {
             "circle-radius": 1,
             "circle-color": "#000000",
-            "circle-opacity": 1
+            "circle-opacity": 0
         }
     });
 
@@ -101,6 +100,7 @@ map.on('load', function () {
         "filter": ["in", "Location", ""]
     });
 
+    // allow for popup when clicking on marker
     map.on('click', function(e) {
         let features = map.queryRenderedFeatures(e.point, {
             layers: ['data-police'] // replace this with the name of the layer
@@ -118,11 +118,6 @@ map.on('load', function () {
             .addTo(map);
     });
 });
-
-
-
-
-
 
 // takes user location+radius and returns pixel values of bound box coordinates
 function calculateBBox(userLat, userLon, radius){
