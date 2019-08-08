@@ -253,10 +253,10 @@ function getRadiusFromSpeed(speed, responseTime){
 function userToCategoryFilter(userFilter){
     let filter = ["in", "Icon-Image"];
     if(userFilter.actions === true){
-        filter.push("action");
+        filter.push("Action");
     }
     if (userFilter.intel === true){
-        filter.push("intel")
+        filter.push("Intel")
     }
     return filter;
 }
