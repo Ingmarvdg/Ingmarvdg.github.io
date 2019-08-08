@@ -5,32 +5,17 @@ let currentZoom = defaultZoom;
 let userFilter = {action: true, intel: true};
 let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "type": "Feature", "properties": {}};
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
-let userLat;
-let userLon;
+let userLat = 0;
+let userLon = 0;
 let refreshRate = 2000;
 let userSpeed = 5; // variable for user speed, default is 6 meters per second, this is used if speed cannot be detected on device
 let actionRadius;
 let oldRelevantLocations = [];
 let relevantLocations = [];
-let notificationList = [];
 let geoLocationOptions = {enableHighAccuracy: true,
                             timeout: 5000,
                             maximumAge: 0};
 let responseTime = 120; // used to set distance, show all locations that are within 120 seconds reach
-
-// update user location by watching its position
-navigator.geolocation.watchPosition(function(pos) {
-    userLat = pos.coords.latitude;
-    userLon = pos.coords.longitude;
-    if(pos.coords.speed != null){
-        userSpeed = pos.coords.speed;
-    }
-    userGEO = {"geometry": {"type": "Point", "coordinates": [userLon, userLat]}, "type": "Feature", "properties": {}};
-    console.log('position updated', userLat, userLon)
-},function() {
-    console.log('couldnt get user location')
-    }, geoLocationOptions
-);
 
 // initialize map
 let map = new mapboxgl.Map({
@@ -49,7 +34,7 @@ Notification.requestPermission(function(status) {
 let categoryFilter = userToCategoryFilter(userFilter);
 
 // add user location marker
-map.addControl(new mapboxgl.GeolocateControl({
+let geoLocateController = new mapboxgl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
     },
@@ -57,14 +42,21 @@ map.addControl(new mapboxgl.GeolocateControl({
     fitBoundsOptions: {
         maxZoom: currentZoom
     }
-}));
+});
+map.addControl(geoLocateController);
 
-map.on("trackuserlocationstart", function() {
+// check for events
+geoLocateController.on("trackuserlocationstart", function() {
     console.log("user location started")
 });
 
-map.on("geolocate", function() {
-    console.log("user location updated")
+geoLocateController.on("geolocate", function(data) {
+    userLat = data.coords.latitude;
+    userLon = data.coords.longitude;
+    if(data.coords.speed != null){
+        userSpeed = data.coords.speed;
+    }
+    userGEO = {"geometry": {"type": "Point", "coordinates": [userLon, userLat]}, "type": "Feature", "properties": {}};
 });
 
 map.on('load', function () {
@@ -103,6 +95,7 @@ map.on('load', function () {
             for (let index = 0; index < relevantLocations.length; index++) {
                 if(!joeysList.includes(relevantLocations[index].properties.Location)){
                     sendNotifications(relevantLocations[index]);
+                    console.log("notification sent");
                 }
             }
         }
@@ -129,7 +122,6 @@ map.on('load', function () {
         if(error) throw error;
         map.addImage('OAction', image)
     });
-
 
     // add data sources for user location and points of interest
     map.addSource('user', { type: 'geojson', data: userGEO });
