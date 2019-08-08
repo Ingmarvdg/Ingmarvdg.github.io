@@ -2,6 +2,7 @@
 const defaultLocation = [5.9795, 50.8882];
 const defaultZoom = 16;
 let currentZoom = defaultZoom;
+let userFilter = {action: true, intel: true};
 let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "type": "Feature", "properties": {}};
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat;
@@ -39,6 +40,9 @@ Notification.requestPermission(function(status) {
     console.log('Notification permission status:', status);
 });
 
+// set filter for categories, now only done at setup
+let categoryFilter = userToCategoryFilter(userFilter);
+
 // add user location marker
 map.addControl(new mapboxgl.GeolocateControl({
     positionOptions: {
@@ -49,6 +53,15 @@ map.addControl(new mapboxgl.GeolocateControl({
         maxZoom: currentZoom
     }
 }));
+
+
+map.on("trackuserlocationstart", function() {
+    console.log("user location started")
+});
+
+map.on("geolocate", function() {
+    console.log("user location updated")
+});
 
 map.on('load', function () {
     displayNotification();
@@ -66,12 +79,16 @@ map.on('load', function () {
         // filter locations within radius of user
         let bbox = calculateBBox(userLat, userLon, actionRadius);
         let relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations-target']});
-        let filter = relevantLocations.reduce(function(memo, relevantLocations) {
+        let inclusiveFilter = relevantLocations.reduce(function(memo, relevantLocations) {
             memo.push(relevantLocations.properties.Location);
             return memo;
         }, ['in', 'Location']);
-        map.setFilter("locations-highlighted", filter);
-        console.log("Update information: actionRadius is %d, ", actionRadius);
+        let exclusiveFilter = relevantLocations.reduce(function(memo, relevantLocations) {
+            memo.push(relevantLocations.properties.Location);
+            return memo;
+        }, ['!in', 'Location']);
+        map.setFilter("locations-highlighted", ["all", inclusiveFilter, categoryFilter]);
+        map.setFilter("markers", ["all", exclusiveFilter, categoryFilter]);
     }, 250);
 
     // load and add images
@@ -108,6 +125,7 @@ map.on('load', function () {
 
     // add data sources for user location and points of interest
     map.addSource('user', { type: 'geojson', data: userGEO });
+
     map.addSource('locationpoints', {
         type: 'geojson',
         data: './GeoJason.geojson'
@@ -137,7 +155,8 @@ map.on('load', function () {
             "icon-size":0.3,
 
             "text-size":10
-        }
+        },
+        "filter": ["!in", "Location", ""]
     });
 
     map.addLayer({
@@ -230,6 +249,17 @@ function getRadiusFromSpeed(speed, responseTime){
     return(radius);
 }
 
+// converts user input to a mapbox interpretable filter
+function userToCategoryFilter(userFilter){
+    let filter = ["in", "Icon-Image"];
+    if(userFilter.actions === true){
+        filter.push("action");
+    }
+    if (userFilter.intel === true){
+        filter.push("intel")
+    }
+    return filter;
+}
 function displayNotification() {
     if (Notification.permission == 'granted') {
         navigator.serviceWorker.getRegistration().then(function(registration) {
@@ -237,4 +267,3 @@ function displayNotification() {
         });
     }
 }
-
