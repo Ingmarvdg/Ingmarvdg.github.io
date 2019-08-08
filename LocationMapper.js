@@ -168,7 +168,7 @@ map.on('load', function () {
     // allow for popup when clicking on marker
     map.on('click', function(e) {
         let features = map.queryRenderedFeatures(e.point, {
-            layers: ['markers'] // replace this with the name of the layer
+            layers: ['markers', 'locations-highlighted'] // replace this with the name of the layer
         });
 
         if (!features.length) {
