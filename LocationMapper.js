@@ -92,32 +92,22 @@ map.on('load', function () {
     }, 250);
 
     // load and add images
-    map.loadImage('./IntelIn.png', function(error,image){
+    map.loadImage('./intelin.png', function(error,image){
         if(error) throw error;
         map.addImage('IIntel', image)
     });
 
-    /*map.loadImage('./IntelIn.png', function(error,image){
-        if(error) throw error;
-        map.addImage('Ievent', image)
-    });
-
-    map.loadImage('./IntelIn.png', function(error,image){
-        if(error) throw error;
-        map.addImage('Ifine', image)
-    });
-*/
-    map.loadImage('./IntelOut.png', function(error,image){
+    map.loadImage('./intelout.png', function(error,image){
         if(error) throw error;
         map.addImage('OIntel', image)
     });
 
-    map.loadImage('./ActionsIn.png', function(error,image){
+    map.loadImage('./actionin.png', function(error,image){
         if(error) throw error;
         map.addImage('IAction', image)
     });
 
-    map.loadImage('./ActionOut.png', function(error,image){
+    map.loadImage('./actionout.png', function(error,image){
         if(error) throw error;
         map.addImage('OAction', image)
     });
@@ -174,8 +164,6 @@ map.on('load', function () {
         },
         "filter": ["in", "Location", ""]
     });
-
-
 
     // allow for popup when clicking on marker
     map.on('click', function(e) {
@@ -252,14 +240,16 @@ function getRadiusFromSpeed(speed, responseTime){
 // converts user input to a mapbox interpretable filter
 function userToCategoryFilter(userFilter){
     let filter = ["in", "Icon-image"];
-    if(userFilter.actions === true){
+    if(userFilter.action === true){
         filter.push("Action");
     }
     if (userFilter.intel === true){
         filter.push("Intel")
     }
+    console.log(filter);
     return filter;
 }
+
 function displayNotification() {
     if (Notification.permission == 'granted') {
         navigator.serviceWorker.getRegistration().then(function(registration) {
