@@ -9,6 +9,7 @@ let userLat;
 let userLon;
 let userSpeed = 5; // variable for user speed, default is 6 meters per second, this is used if speed cannot be detected on device
 let actionRadius;
+let oldRelevantLocations = [];
 let geoLocationOptions = {enableHighAccuracy: true,
                             timeout: 5000,
                             maximumAge: 0};
@@ -36,11 +37,9 @@ let map = new mapboxgl.Map({
     zoom: defaultZoom // starting zoom
 });
 
+// request permission to send notifications
 Notification.requestPermission(function(status) {
     console.log('Notification permission status:', status);
-    if(Notification.permission === 'granted') {
-        startNotifications();
-    }
 });
 
 // set filter for categories, now only done at setup
@@ -67,8 +66,6 @@ map.on("geolocate", function() {
 });
 
 map.on('load', function () {
-
-    //displayNotification();
     // periodical events
     window.setInterval(function() {
         // update user location with geo data
@@ -93,6 +90,23 @@ map.on('load', function () {
         }, ['!in', 'Location']);
         map.setFilter("locations-highlighted", ["all", inclusiveFilter, categoryFilter]);
         map.setFilter("markers", ["all", exclusiveFilter, categoryFilter]);
+
+        // check if new locations popped up, if so send a notification to yaboi
+        console.log(oldRelevantLocations.length, relevantLocations.length);
+        if(oldRelevantLocations !== []) {
+            let index;
+            console.log(oldRelevantLocations);
+            for (index = 0; index < relevantLocations.length; index++) {
+                //console.log(oldRelevantLocations.indexOf(relevantLocations[index]));
+                console.log(relevantLocations[index]);
+                if (oldRelevantLocations.indexOf(relevantLocations[index]) !== -1) {
+                    console.log('sent a notification');
+                    //sendNotifications(relevantLocations[index])
+                }
+            }
+        }
+
+        oldRelevantLocations = relevantLocations;
     }, 250);
 
     // load and add images
@@ -168,9 +182,6 @@ map.on('load', function () {
         },
         "filter": ["in", "Location", ""]
     });
-
-
-
 
     // allow for popup when clicking on marker
     map.on('click', function(e) {
@@ -257,19 +268,10 @@ function userToCategoryFilter(userFilter){
     return filter;
 }
 
-/*function displayNotification() {
-    if (Notification.permission == 'granted') {
-        navigator.serviceWorker.getRegistration().then(function(registration) {
-            registration.showNotification('Hello world!');
-        });
-    }
-}*/
-
-
-function startNotifications() {
-    var notifTitle = "Nieuwe notificatie";
+function sendNotifications(feature) {
+    let notifTitle = "Nieuwe notificatie";
     // var notifBody = "Intel in de buurt";
-    var options = {
+    let options = {
         body: 'Intel in de buurt!',
         icon: 'fine.png',
         vibrate: [100, 50, 100],
@@ -277,10 +279,7 @@ function startNotifications() {
             dateOfArrival: Date.now(),
             primaryKey: 1
         }
-    }
-
-    var notif = new Notification(notifTitle, options);
-
-    //setTimeout(startNotifications, 3000);
+    };
+    let notif = new Notification(notifTitle, options);
 }
 
