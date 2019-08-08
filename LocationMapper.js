@@ -38,6 +38,9 @@ let map = new mapboxgl.Map({
 
 Notification.requestPermission(function(status) {
     console.log('Notification permission status:', status);
+    if(Notification.permission === 'granted') {
+        startNotifications();
+    }
 });
 
 // set filter for categories, now only done at setup
@@ -64,7 +67,8 @@ map.on("geolocate", function() {
 });
 
 map.on('load', function () {
-    displayNotification();
+
+    //displayNotification();
     // periodical events
     window.setInterval(function() {
         // update user location with geo data
@@ -165,6 +169,9 @@ map.on('load', function () {
         "filter": ["in", "Location", ""]
     });
 
+
+
+
     // allow for popup when clicking on marker
     map.on('click', function(e) {
         let features = map.queryRenderedFeatures(e.point, {
@@ -250,10 +257,23 @@ function userToCategoryFilter(userFilter){
     return filter;
 }
 
-function displayNotification() {
+/*function displayNotification() {
     if (Notification.permission == 'granted') {
         navigator.serviceWorker.getRegistration().then(function(registration) {
             registration.showNotification('Hello world!');
         });
     }
+}*/
+
+
+function startNotifications() {
+    var notifTitle = "Hello";
+    var notifBody = "World";
+    var options = {
+        body: notifBody
+    }
+    
+    var notif = new Notification(notifTitle, options);
+    setTimeout(startNotifications, 3000);
 }
+
