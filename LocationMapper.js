@@ -267,13 +267,20 @@ function userToCategoryFilter(userFilter){
 
 
 function startNotifications() {
-    var notifTitle = "Hello";
-    var notifBody = "World";
+    var notifTitle = "Nieuwe notificatie";
+    // var notifBody = "Intel in de buurt";
     var options = {
-        body: notifBody
+        body: 'Intel in de buurt!',
+        icon: 'fine.png',
+        vibrate: [100, 50, 100],
+        data: {
+            dateOfArrival: Date.now(),
+            primaryKey: 1
+        }
     }
-    
+
     var notif = new Notification(notifTitle, options);
-    setTimeout(startNotifications, 3000);
+
+    //setTimeout(startNotifications, 3000);
 }
 
