@@ -251,7 +251,7 @@ function getRadiusFromSpeed(speed, responseTime){
 
 // converts user input to a mapbox interpretable filter
 function userToCategoryFilter(userFilter){
-    let filter = ["in", "Icon-Image"];
+    let filter = ["in", "Icon-image"];
     if(userFilter.actions === true){
         filter.push("Action");
     }
