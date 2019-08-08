@@ -1,3 +1,5 @@
+
+
 const cacheName = 'Map-v1';
 const staticAssets = [
     './',

@@ -12,10 +12,10 @@
     "Location":"Smedestraat 1",
     "Date":"2-8-2019",
     "Time":"15:40",
-    "Subject":"Suspicious car",
-    "Description":"There is a suspicious car standing here. It looks very suspicious. ",
-    "Prioriteit":1,
-    "Icon-image":"module"
+    "Subject":"Verdachte auto",
+    "Description":"Er staat hier een verdachte auto. Het ziet er zeer verdacht uit. ",
+    "Prioriteit":"module",
+    "Icon-image":"Action"
     }
   },
   {
@@ -27,12 +27,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Park Meezenbroek",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Youth in park",
+    "Subject":"Jeugd in park",
     "Description":"This is a hotspot for youth hanging out in the park. They often scare people and their dogs by throwing stuff at them.  If you have time, please drive by if there are any people causing trouble. ",
-    "Prioriteit":2,
-    "Icon-image":"loi"
+    "Prioriteit":"loi",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -45,11 +45,11 @@
     "City":"Heerlen",
     "Location":"Kerkstraat 3",
     "Date":"24-7-2019",
-    "Time":".",
-    "Subject":"Neighbour fight",
+    "Time":"Geen datum",
+    "Subject":"Burenruzie",
     "Description":"Last week there has been a fight here between the neighbours at number 3-4. Be aware of the tensions in the neighbourhood.",
-    "Prioriteit":3,
-    "Icon-image":"loi"
+    "Prioriteit":"loi",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -63,10 +63,10 @@
     "Location":"Apollolaan ",
     "Date":"29-7-2019",
     "Time":".",
-    "Subject":"Event",
+    "Subject":"Evenement",
     "Description":"Running competition through Heerlen. The start/finish are at the Apollolaan",
-    "Prioriteit":4,
-    "Icon-image":"event"
+    "Prioriteit":"event",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -80,10 +80,10 @@
     "Location":"Kruidvat Promenade 27",
     "Date":"5-8-2019",
     "Time":"09:20",
-    "Subject":"Theft ",
+    "Subject":"Diefstal ",
     "Description":"Theft in Kruidvat Heerlen. 30-year old woman has stolen some small goods.",
-    "Prioriteit":1,
-    "Icon-image":"module"
+    "Prioriteit":"module",
+    "Icon-image":"Action"
     }
   },
   {
@@ -95,12 +95,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Vijgenweg 5b",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Open fine",
+    "Subject":"Open boete",
     "Description":"200 meters from now there is a house with an open fine. The fine is on name of ... and consists of 2000.",
-    "Prioriteit":2,
-    "Icon-image":"fine"
+    "Prioriteit":"fine",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -112,12 +112,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Huskensweg 112",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"New inhabitant POI",
+    "Subject":"Nieuwe bewoner POI",
     "Description":"A POI from .. Registered at this address last week. Name: Pietje van Dijk. Last month he was released after serving 5 years in prison for an armed assault. ",
-    "Prioriteit":3,
-    "Icon-image":"loi"
+    "Prioriteit":"loi",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -129,12 +129,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Zwemschool van Tongeren",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Location ban",
+    "Subject":"Locatieverbod",
     "Description":"Bart Huissen has a location ban in this swimming pool and 200 meters around it. Tick here to see his profile and picture. ",
-    "Prioriteit":4,
-    "Icon-image":"loi"
+    "Prioriteit":"loi",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -148,10 +148,10 @@
     "Location":"Geerstraat 60",
     "Date":"1-8-2019",
     "Time":"06:50",
-    "Subject":"Traffic accident",
+    "Subject":"Verkeersongeluk",
     "Description":"There has been a traffic accident at the Geerstraat. A car crashed into a bike.",
-    "Prioriteit":1,
-    "Icon-image":"module"
+    "Prioriteit":"module",
+    "Icon-image":"Action"
     }
   },
   {
@@ -163,12 +163,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Govert Flinckstraat 27",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Hotspot for bike thefts",
+    "Subject":"Hotspot voor fietsdiefstallen",
     "Description":"The last few weeks multiple bikes have been stolen around this area. Be aware of bike thieves.",
-    "Prioriteit":2,
-    "Icon-image":"loi"
+    "Prioriteit":"loi",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -182,10 +182,10 @@
     "Location":"Vullingsweg 2",
     "Date":"29-7-2019",
     "Time":"15:50",
-    "Subject":"Vandalism ",
+    "Subject":"Vandalisme ",
     "Description":"Two persons put fireworks in the letter box of one of the neighbours and ran away. The inhabitant called and is worried they will come back to do more damage.",
-    "Prioriteit":3,
-    "Icon-image":"module"
+    "Prioriteit":"module",
+    "Icon-image":"Action"
     }
   },
   {
@@ -197,12 +197,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Keizerstraat 18",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Open fine",
+    "Subject":"Open boete",
     "Description":"Open fine of 200",
-    "Prioriteit":4,
-    "Icon-image":"fine"
+    "Prioriteit":"fine",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -214,12 +214,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Oude Lindestraat 232",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Open fine",
+    "Subject":"Open boete",
     "Description":"Open fine of 500",
-    "Prioriteit":1,
-    "Icon-image":"fine"
+    "Prioriteit":"fine",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -231,12 +231,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Uplianusstraat 5",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Open fine",
+    "Subject":"Open boete",
     "Description":"Open fine of 50",
-    "Prioriteit":2,
-    "Icon-image":"fine"
+    "Prioriteit":"fine",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -248,12 +248,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Herlongstraat 22",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Open fine",
+    "Subject":"Open boete",
     "Description":"Open fine of 8000",
-    "Prioriteit":3,
-    "Icon-image":"fine"
+    "Prioriteit":"fine",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -265,12 +265,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Nicolaas Beetsstraat 45",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Open fine",
+    "Subject":"Open boete",
     "Description":"Open fine of 79843",
-    "Prioriteit":4,
-    "Icon-image":"fine"
+    "Prioriteit":"fine",
+    "Icon-image":"Intel"
     }
   },
   {
@@ -282,12 +282,12 @@
     "properties": {
     "City":"Heerlen",
     "Location":"Lommerpad 1",
-    "Date":".",
+    "Date":"Geen datum",
     "Time":".",
-    "Subject":"Open fine",
+    "Subject":"Open boete",
     "Description":"Open fine of 2374",
-    "Prioriteit":1,
-    "Icon-image":"fine"
+    "Prioriteit":"fine",
+    "Icon-image":"Intel"
     }
   }
 ]

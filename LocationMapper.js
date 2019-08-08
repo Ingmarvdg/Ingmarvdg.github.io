@@ -35,6 +35,10 @@ let map = new mapboxgl.Map({
     zoom: defaultZoom // starting zoom
 });
 
+Notification.requestPermission(function(status) {
+    console.log('Notification permission status:', status);
+});
+
 // add user location marker
 map.addControl(new mapboxgl.GeolocateControl({
     positionOptions: {
@@ -47,6 +51,7 @@ map.addControl(new mapboxgl.GeolocateControl({
 }));
 
 map.on('load', function () {
+    displayNotification();
     // periodical events
     window.setInterval(function() {
         // update user location with geo data
@@ -72,27 +77,32 @@ map.on('load', function () {
     // load and add images
     map.loadImage('./IntelIn.png', function(error,image){
         if(error) throw error;
-        map.addImage('loi', image)
+        map.addImage('IIntel', image)
+    });
+
+    /*map.loadImage('./IntelIn.png', function(error,image){
+        if(error) throw error;
+        map.addImage('Ievent', image)
     });
 
     map.loadImage('./IntelIn.png', function(error,image){
         if(error) throw error;
-        map.addImage('event', image)
+        map.addImage('Ifine', image)
     });
-
-    map.loadImage('./IntelIn.png', function(error,image){
-        if(error) throw error;
-        map.addImage('fine', image)
-    });
-
+*/
     map.loadImage('./IntelOut.png', function(error,image){
         if(error) throw error;
-        map.addImage('outside', image)
+        map.addImage('OIntel', image)
     });
 
     map.loadImage('./ActionsIn.png', function(error,image){
         if(error) throw error;
-        map.addImage('module', image)
+        map.addImage('IAction', image)
+    });
+
+    map.loadImage('./ActionOut.png', function(error,image){
+        if(error) throw error;
+        map.addImage('OAction', image)
     });
 
 
@@ -120,7 +130,7 @@ map.on('load', function () {
         "type":"symbol",
         "source": "locationpoints",
         "layout":{
-            "icon-image": "outside",
+            "icon-image": 'O'+ "{Icon-image}",
             "icon-allow-overlap":true,
             "icon-ignore-placement":true,
             "icon-padding":0,
@@ -135,7 +145,7 @@ map.on('load', function () {
         "type":"symbol",
         "source": "locationpoints",
         "layout":{
-            "icon-image": "{Icon-image}",
+            "icon-image": 'I'+ "{Icon-image}",
             "icon-allow-overlap":true,
             "icon-ignore-placement":true,
             "icon-padding":0,
@@ -162,7 +172,13 @@ map.on('load', function () {
 
         let popup = new mapboxgl.Popup({ offset: [0, -15] })
             .setLngLat(feature.geometry.coordinates)
-            .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>')
+            .setHTML(
+                //'<p><img src="event.png" width="30" height="30" align="middle"></p>' +
+                '<h3>'+ feature.properties.Subject + '</h3>' +
+                '<p><b>Datum: \</b>' + feature.properties.Date + '</p>' +
+                '<p><b>Locatie: \</b>' + feature.properties.Location + '</p>' +
+                '<p><b>Beschrijving: \</b>' + feature.properties.Description + '</p>'
+            )
             .addTo(map);
     });
 });
@@ -212,5 +228,13 @@ function getRadiusFromSpeed(speed, responseTime){
     }
     radius = responseTime * multiplier;
     return(radius);
+}
+
+function displayNotification() {
+    if (Notification.permission == 'granted') {
+        navigator.serviceWorker.getRegistration().then(function(registration) {
+            registration.showNotification('Hello world!');
+        });
+    }
 }
 
