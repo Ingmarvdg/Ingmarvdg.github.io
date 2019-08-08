@@ -7,9 +7,12 @@ let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "t
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat;
 let userLon;
+let refreshRate = 2000;
 let userSpeed = 5; // variable for user speed, default is 6 meters per second, this is used if speed cannot be detected on device
 let actionRadius;
 let oldRelevantLocations = [];
+let relevantLocations = [];
+let notificationList = [];
 let geoLocationOptions = {enableHighAccuracy: true,
                             timeout: 5000,
                             maximumAge: 0};
@@ -56,7 +59,6 @@ map.addControl(new mapboxgl.GeolocateControl({
     }
 }));
 
-
 map.on("trackuserlocationstart", function() {
     console.log("user location started")
 });
@@ -79,7 +81,7 @@ map.on('load', function () {
 
         // filter locations within radius of user
         let bbox = calculateBBox(userLat, userLon, actionRadius);
-        let relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations-target']});
+        relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations-target']});
         let inclusiveFilter = relevantLocations.reduce(function(memo, relevantLocations) {
             memo.push(relevantLocations.properties.Location);
             return memo;
@@ -91,23 +93,20 @@ map.on('load', function () {
         map.setFilter("locations-highlighted", ["all", inclusiveFilter, categoryFilter]);
         map.setFilter("markers", ["all", exclusiveFilter, categoryFilter]);
 
-        // check if new locations popped up, if so send a notification to yaboi
-        console.log(oldRelevantLocations.length, relevantLocations.length);
-        if(oldRelevantLocations !== []) {
-            let index;
-            console.log(oldRelevantLocations);
-            for (index = 0; index < relevantLocations.length; index++) {
-                //console.log(oldRelevantLocations.indexOf(relevantLocations[index]));
-                console.log(relevantLocations[index]);
-                if (oldRelevantLocations.indexOf(relevantLocations[index]) !== -1) {
-                    console.log('sent a notification');
-                    //sendNotifications(relevantLocations[index])
+        let joeysList = [];
+        for (let index = 0; index < relevantLocations.length; index++) {
+            joeysList.push(relevantLocations[index].properties.Location)
+        }
+
+        if(oldRelevantLocations.length !== 0) {
+            for (let index = 0; index < relevantLocations.length; index++) {
+                if(!joeysList.includes(relevantLocations[index].properties.Location)){
+                    sendNotifications(relevantLocations[index]);
                 }
             }
         }
-
         oldRelevantLocations = relevantLocations;
-    }, 250);
+    }, refreshRate);
 
     // load and add images
     map.loadImage('./intelin.png', function(error,image){
