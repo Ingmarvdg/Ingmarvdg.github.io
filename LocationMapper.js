@@ -93,6 +93,7 @@ map.on('load', function () {
         map.setFilter("locations-highlighted", ["all", inclusiveFilter, categoryFilter]);
         map.setFilter("markers", ["all", exclusiveFilter, categoryFilter]);
 
+        // detect if a new item came in range
         let joeysList = [];
         for (let index = 0; index < relevantLocations.length; index++) {
             joeysList.push(relevantLocations[index].properties.Location)
