@@ -12,9 +12,6 @@ let userSpeed = 5; // variable for user speed, default is 6 meters per second, t
 let actionRadius;
 let oldRelevantLocations = [];
 let relevantLocations = [];
-let geoLocationOptions = {enableHighAccuracy: true,
-                            timeout: 5000,
-                            maximumAge: 0};
 let responseTime = 120; // used to set distance, show all locations that are within 120 seconds reach
 
 // initialize map
@@ -48,6 +45,7 @@ map.addControl(geoLocateController);
 // check for events
 geoLocateController.on("trackuserlocationstart", function() {
     console.log("user location started")
+    //sendNotifications(actionRadius);
 });
 
 geoLocateController.on("geolocate", function(data) {
@@ -85,17 +83,17 @@ map.on('load', function () {
         map.setFilter("locations-highlighted", ["all", inclusiveFilter, categoryFilter]);
         map.setFilter("markers", ["all", exclusiveFilter, categoryFilter]);
 
-        // detect if a new item came in range
+        // detect if a new item came in range and send a notification
         let joeysList = [];
         for (let index = 0; index < relevantLocations.length; index++) {
             joeysList.push(relevantLocations[index].properties.Location)
         }
 
-        if(oldRelevantLocations.length !== 0) {
+        if(oldRelevantLocations.length >= 0) {
+            console.log(relevantLocations.length, oldRelevantLocations.length);
             for (let index = 0; index < relevantLocations.length; index++) {
-                if(!joeysList.includes(relevantLocations[index].properties.Location)){
+                if(joeysList.includes(!relevantLocations[index].properties.Location)){
                     sendNotifications(relevantLocations[index]);
-                    console.log("notification sent");
                 }
             }
         }
@@ -103,22 +101,22 @@ map.on('load', function () {
     }, refreshRate);
 
     // load and add images
-    map.loadImage('./intelin.png', function(error,image){
+    map.loadImage('images/intelin.png', function(error,image){
         if(error) throw error;
         map.addImage('IIntel', image)
     });
 
-    map.loadImage('./intelout.png', function(error,image){
+    map.loadImage('images/intelout.png', function(error,image){
         if(error) throw error;
         map.addImage('OIntel', image)
     });
 
-    map.loadImage('./actionin.png', function(error,image){
+    map.loadImage('images/actionin.png', function(error,image){
         if(error) throw error;
         map.addImage('IAction', image)
     });
 
-    map.loadImage('./actionout.png', function(error,image){
+    map.loadImage('images/actionout.png', function(error,image){
         if(error) throw error;
         map.addImage('OAction', image)
     });
@@ -260,7 +258,7 @@ function userToCategoryFilter(userFilter){
     return filter;
 }
 
-function sendNotifications(feature) {
+function sendNotifications() {
     let notifTitle = "Nieuwe notificatie";
     // var notifBody = "Intel in de buurt";
     let options = {
@@ -272,6 +270,7 @@ function sendNotifications(feature) {
             primaryKey: 1
         }
     };
-    let notif = new Notification(notifTitle, options);
+    console.log("this is supposed to be a notification");
+    new Notification(notifTitle, options);
 }
 
