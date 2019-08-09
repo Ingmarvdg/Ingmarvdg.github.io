@@ -45,7 +45,6 @@ map.addControl(geoLocateController);
 // check for events
 geoLocateController.on("trackuserlocationstart", function() {
     console.log("user location started")
-    //sendNotifications(actionRadius);
 });
 
 geoLocateController.on("geolocate", function(data) {
@@ -84,16 +83,16 @@ map.on('load', function () {
         map.setFilter("markers", ["all", exclusiveFilter, categoryFilter]);
 
         // detect if a new item came in range and send a notification
-        let joeysList = [];
-        for (let index = 0; index < relevantLocations.length; index++) {
-            joeysList.push(relevantLocations[index].properties.Location)
-        }
-
-        if(oldRelevantLocations.length >= 0) {
-            console.log(relevantLocations.length, oldRelevantLocations.length);
+        if(oldRelevantLocations.length > 0) {
+            let joeysList = [];
+            for (let index = 0; index < oldRelevantLocations.length; index++) {
+                joeysList.push(oldRelevantLocations[index].properties.Location)
+            }
+            console.log(relevantLocations.length, joeysList.length);
             for (let index = 0; index < relevantLocations.length; index++) {
-                if(joeysList.includes(!relevantLocations[index].properties.Location)){
+                if(joeysList.includes(relevantLocations[index].properties.Location) === false){
                     sendNotifications(relevantLocations[index]);
+                    console.log(relevantLocations[index].properties.Location);
                 }
             }
         }
@@ -260,7 +259,7 @@ function userToCategoryFilter(userFilter){
 
 function sendNotifications() {
     let notifTitle = "Nieuwe notificatie";
-    // var notifBody = "Intel in de buurt";
+    let notifBody = "Intel in de buurt";
     let options = {
         body: 'Intel in de buurt!',
         icon: 'fine.png',
@@ -270,7 +269,6 @@ function sendNotifications() {
             primaryKey: 1
         }
     };
-    console.log("this is supposed to be a notification");
     new Notification(notifTitle, options);
 }
 
