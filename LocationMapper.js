@@ -127,7 +127,6 @@ map.on('load', function () {
         type: 'geojson',
         data: './GeoJason.geojson'
     });
-
     // add map layers for points of interest coordinates and points of interest within user range
     map.addLayer({
         "id": "locations-target",
@@ -269,6 +268,7 @@ function sendNotifications(feature) {
             primaryKey: 1
         }
     };
-    new Notification(notifTitle, options);
+    //new Notification(notifTitle, options);
+    $.notify("helloworld")
 }
 
