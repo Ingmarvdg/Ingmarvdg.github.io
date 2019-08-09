@@ -137,7 +137,7 @@ map.on('load', function () {
             "circle-radius": 1,
             "circle-color": "#000000",
             "circle-opacity": 0
-        }
+        },
     });
 
     map.addLayer({
@@ -145,7 +145,7 @@ map.on('load', function () {
         "type":"symbol",
         "source": "locationpoints",
         "layout":{
-            "icon-image": 'O'+ "{Icon-image}",
+            "icon-image": 'O'+ "{Category}",
             "icon-allow-overlap":true,
             "icon-ignore-placement":true,
             "icon-padding":0,
@@ -161,7 +161,7 @@ map.on('load', function () {
         "type":"symbol",
         "source": "locationpoints",
         "layout":{
-            "icon-image": 'I'+ "{Icon-image}",
+            "icon-image": 'I'+ "{Category}",
             "icon-allow-overlap":true,
             "icon-ignore-placement":true,
             "icon-padding":0,
@@ -246,7 +246,7 @@ function getRadiusFromSpeed(speed, responseTime){
 
 // converts user input to a mapbox interpretable filter
 function userToCategoryFilter(userFilter){
-    let filter = ["in", "Icon-image"];
+    let filter = ["in", "Category"];
     if(userFilter.action === true){
         filter.push("Action");
     }
@@ -257,12 +257,12 @@ function userToCategoryFilter(userFilter){
     return filter;
 }
 
-function sendNotifications() {
-    let notifTitle = "Nieuwe notificatie";
-    let notifBody = "Intel in de buurt";
+function sendNotifications(feature) {
+    let notifTitle = feature.properties.Category + " in de buurt!";
+
     let options = {
-        body: 'Intel in de buurt!',
-        icon: 'fine.png',
+        body: feature.properties.Subject,
+        icon: feature.properties.Prioriteit + '.png',
         vibrate: [100, 50, 100],
         data: {
             dateOfArrival: Date.now(),

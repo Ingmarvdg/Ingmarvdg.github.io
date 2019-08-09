@@ -15,7 +15,7 @@
     "Subject":"Verdachte auto",
     "Description":"Er staat hier een verdachte auto. Het ziet er zeer verdacht uit. ",
     "Prioriteit":"module",
-    "Icon-image":"Action"
+    "Category":"Action"
     }
   },
   {
@@ -32,7 +32,7 @@
     "Subject":"Jeugd in park",
     "Description":"This is a hotspot for youth hanging out in the park. They often scare people and their dogs by throwing stuff at them.  If you have time, please drive by if there are any people causing trouble. ",
     "Prioriteit":"loi",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -49,7 +49,7 @@
     "Subject":"Burenruzie",
     "Description":"Last week there has been a fight here between the neighbours at number 3-4. Be aware of the tensions in the neighbourhood.",
     "Prioriteit":"loi",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -66,7 +66,7 @@
     "Subject":"Evenement",
     "Description":"Running competition through Heerlen. The start/finish are at the Apollolaan",
     "Prioriteit":"event",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -83,7 +83,7 @@
     "Subject":"Diefstal ",
     "Description":"Theft in Kruidvat Heerlen. 30-year old woman has stolen some small goods.",
     "Prioriteit":"module",
-    "Icon-image":"Action"
+    "Category":"Action"
     }
   },
   {
@@ -100,7 +100,7 @@
     "Subject":"Open boete",
     "Description":"200 meters from now there is a house with an open fine. The fine is on name of ... and consists of 2000.",
     "Prioriteit":"fine",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -117,7 +117,7 @@
     "Subject":"Nieuwe bewoner POI",
     "Description":"A POI from .. Registered at this address last week. Name: Pietje van Dijk. Last month he was released after serving 5 years in prison for an armed assault. ",
     "Prioriteit":"loi",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -134,7 +134,7 @@
     "Subject":"Locatieverbod",
     "Description":"Bart Huissen has a location ban in this swimming pool and 200 meters around it. Tick here to see his profile and picture. ",
     "Prioriteit":"loi",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -151,7 +151,7 @@
     "Subject":"Verkeersongeluk",
     "Description":"There has been a traffic accident at the Geerstraat. A car crashed into a bike.",
     "Prioriteit":"module",
-    "Icon-image":"Action"
+    "Category":"Action"
     }
   },
   {
@@ -168,7 +168,7 @@
     "Subject":"Hotspot voor fietsdiefstallen",
     "Description":"The last few weeks multiple bikes have been stolen around this area. Be aware of bike thieves.",
     "Prioriteit":"loi",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -185,7 +185,7 @@
     "Subject":"Vandalisme ",
     "Description":"Two persons put fireworks in the letter box of one of the neighbours and ran away. The inhabitant called and is worried they will come back to do more damage.",
     "Prioriteit":"module",
-    "Icon-image":"Action"
+    "Category":"Action"
     }
   },
   {
@@ -202,7 +202,7 @@
     "Subject":"Open boete",
     "Description":"Open fine of 200",
     "Prioriteit":"fine",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -219,7 +219,7 @@
     "Subject":"Open boete",
     "Description":"Open fine of 500",
     "Prioriteit":"fine",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -236,7 +236,7 @@
     "Subject":"Open boete",
     "Description":"Open fine of 50",
     "Prioriteit":"fine",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -253,7 +253,7 @@
     "Subject":"Open boete",
     "Description":"Open fine of 8000",
     "Prioriteit":"fine",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -270,7 +270,7 @@
     "Subject":"Open boete",
     "Description":"Open fine of 79843",
     "Prioriteit":"fine",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   },
   {
@@ -287,7 +287,7 @@
     "Subject":"Open boete",
     "Description":"Open fine of 2374",
     "Prioriteit":"fine",
-    "Icon-image":"Intel"
+    "Category":"Intel"
     }
   }
 ]
