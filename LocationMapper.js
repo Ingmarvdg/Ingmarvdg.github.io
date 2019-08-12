@@ -45,7 +45,9 @@ Notification.requestPermission(function(status) {
 
 // set filter for categories, now only done at setup
 // get filter settings from cookies
-userFilter = Cookies.get('filter settings');
+if(Cookies.get('filter settings')){
+    userFilter = Cookies.get('filter settings');
+}
 let categoryFilter = userToCategoryFilter(userFilter);
 
 // check for events
@@ -106,10 +108,8 @@ map.on('load', function () {
         // create cookie for filtered locations list
         Cookies.remove('filtered locations', {path: '' });
         filteredLocations = map.querySourceFeatures('locationpoints',{filter: categoryFilter});
-        console.log(filteredLocations);
         Cookies.set('filtered locations', filteredLocations, {path: '' });
         oldRelevantLocations = relevantLocations;
-        console.log(Cookies.get("filtered locations"))
     });
 
     // load and add images
