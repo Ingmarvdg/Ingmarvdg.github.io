@@ -276,7 +276,7 @@ function getRadiusFromSpeed(speed, responseTime){
 
 // converts user input to a mapbox interpretable filter
 function userToCategoryFilter(userFilter){
-    let filter = ["in", "Prioriteit"];
+    let filter = ["in", "Prioriteit", "presentation"];
     if(userFilter.loi === true){
         filter.push("loi");
     }
