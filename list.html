@@ -31,20 +31,57 @@
   </nav>
 
   <!-- Page Content -->
+  <div class="container">
+
     <div class="row">
 
-      <!-- Blog Entries Column -->
+      <!-- Location Entries Column -->
       <div class="col-md">
 
-        <h1 class="my-4 text-center">Politie Heerlen
-        </h1>
+        <h1 class="my-4 text-center">Locaties</h1>
+        <!-- <h2 class="my-4 text-center">Binnen <p id="demo"></p> km</h2> -->
+        <h2 class="my-4 text-center">Binnen <button data-toggle="modal" data-target="#exampleModalCenter"><span id="value"></span></button> km</h2>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2 class="modal-title" id="exampleModalLongTitle">Maximale afstand</h2>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="slideContainer">
+                    <input type="range" min="0.5" max="100" value="80"   class="slider" id="myRange">
+                </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         <!-- Location Post -->
         <div class="card mb-4">
-          <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">
           <div class="card-body">
-            <h2 class="card-title">Briefing item 1</h2>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+            <h2 class="card-title">Verdachte auto</h2>
+            <p class="card-text" id="locaties_adres">Smedestraat 2, Heerlen</p>
+            <p class="card-text" id="afstand"> 0.2 km</p>
+          </div>
+          <div class="card-footer text-muted">
+            Posted on January 1, 2017
+          </div>
+        </div>
+
+        <!-- Location Post -->
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">Open parkeerboete</h2>
+            <p class="card-text" id="locaties_adres">Ergensinheerlen 16A, Heerlen</p>
+            <p class="card-text" id="afstand"> 0.4 km</p>
           </div>
           <div class="card-footer text-muted">
             Posted on January 1, 2017
@@ -73,9 +110,11 @@
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="ListView.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script src="js/script.js"></script>
+
 
 </body>
 
