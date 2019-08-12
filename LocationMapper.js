@@ -2,17 +2,17 @@
 const defaultLocation = [5.9795, 50.8882];
 const defaultZoom = 16;
 let currentZoom = defaultZoom;
-let userFilter = {action: true, intel: true};
+let userFilter = {fines: true, module: true, loi: true};
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat = 0;
 let userLon = 0;
-let refreshRate = 2000;
 let userSpeed = 5; // variable for user speed, default is 6 meters per second, this is used if speed cannot be detected on device
 let actionRadius;
 let oldRelevantLocations = [];
 let relevantLocations = [];
 let responseTime = 120; // used to set distance, show all locations that are within 120 seconds reach
 let dataSource;
+let filteredLocations;
 
 // load datasource
 $.getJSON("./json/GeoJason.geojson", function(json){
@@ -44,16 +44,19 @@ Notification.requestPermission(function(status) {
 });
 
 // set filter for categories, now only done at setup
+// get filter settings from cookies
+userFilter = Cookies.get('filter settings');
 let categoryFilter = userToCategoryFilter(userFilter);
-
 
 // check for events
 geoLocateController.on("trackuserlocationstart", function() {
     console.log("user location started")
 });
 
+
 map.on('load', function () {
     // periodical events
+    geoLocateController._geolocateButton.click();
     geoLocateController.on("geolocate", function(data) {
         // get user latitude and longitude
         userLat = data.coords.latitude;
@@ -73,7 +76,6 @@ map.on('load', function () {
 
         // new filter for locations
         relevantLocations = map.querySourceFeatures('locationpoints',{filter:["<", "distance", actionRadius]});
-        console.log(relevantLocations);
 
         // filter locations within radius of user
         let inclusiveFilter = relevantLocations.reduce(function(memo, relevantLocations) {
@@ -99,7 +101,15 @@ map.on('load', function () {
                 }
             }
         }
+
+        // filter for categories and save set to cookies
+        // create cookie for filtered locations list
+        Cookies.remove('filtered locations', {path: '' });
+        filteredLocations = map.querySourceFeatures('locationpoints',{filter: categoryFilter});
+        console.log(filteredLocations);
+        Cookies.set('filtered locations', filteredLocations, {path: '' });
         oldRelevantLocations = relevantLocations;
+        console.log(Cookies.get("filtered locations"))
     });
 
     // load and add images
@@ -266,12 +276,15 @@ function getRadiusFromSpeed(speed, responseTime){
 
 // converts user input to a mapbox interpretable filter
 function userToCategoryFilter(userFilter){
-    let filter = ["in", "Category"];
-    if(userFilter.action === true){
-        filter.push("Action");
+    let filter = ["in", "Prioriteit"];
+    if(userFilter.loi === true){
+        filter.push("loi");
     }
-    if (userFilter.intel === true){
-        filter.push("Intel")
+    if (userFilter.fines === true){
+        filter.push("fine")
+    }
+    if (userFilter.module === true){
+        filter.push("module")
     }
     console.log(filter);
     return filter;
