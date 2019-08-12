@@ -4,6 +4,9 @@ const cacheName = 'Map-v1';
 const staticAssets = [
     './',
     './index.html',
+    './map.html',
+    './list.html',
+    './settings.html',
     './main.css',
     './LocationMapper.js',
     './Markers.js',

@@ -3,7 +3,6 @@ const defaultLocation = [5.9795, 50.8882];
 const defaultZoom = 16;
 let currentZoom = defaultZoom;
 let userFilter = {action: true, intel: true};
-let userGEO = {"geometry": {"type": "Point", "coordinates": defaultLocation}, "type": "Feature", "properties": {}};
 mapboxgl.accessToken = 'pk.eyJ1IjoiaW5nbWFydmRnIiwiYSI6ImNqeXUzcTdxOTAyMW8zbm1sa2N0MnR4dG8ifQ.yeAXLRvaquHKHuOaPIqOYw';
 let userLat = 0;
 let userLon = 0;
@@ -13,8 +12,14 @@ let actionRadius;
 let oldRelevantLocations = [];
 let relevantLocations = [];
 let responseTime = 120; // used to set distance, show all locations that are within 120 seconds reach
+let dataSource;
 
-// initialize map
+// load datasource
+$.getJSON("./json/GeoJason.geojson", function(json){
+    dataSource = json;
+});
+
+// initialize map and controllers
 let map = new mapboxgl.Map({
     container: 'map', // container id
     style: 'mapbox://styles/ingmarvdg/cjz12ef7l00oy1cro517z0nzl',
@@ -22,15 +27,6 @@ let map = new mapboxgl.Map({
     zoom: defaultZoom // starting zoom
 });
 
-// request permission to send notifications
-Notification.requestPermission(function(status) {
-    console.log('Notification permission status:', status);
-});
-
-// set filter for categories, now only done at setup
-let categoryFilter = userToCategoryFilter(userFilter);
-
-// add user location marker
 let geoLocateController = new mapboxgl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
@@ -42,35 +38,44 @@ let geoLocateController = new mapboxgl.GeolocateControl({
 });
 map.addControl(geoLocateController);
 
+// request permission to send notifications
+Notification.requestPermission(function(status) {
+    console.log('Notification permission status:', status);
+});
+
+// set filter for categories, now only done at setup
+let categoryFilter = userToCategoryFilter(userFilter);
+
+
 // check for events
 geoLocateController.on("trackuserlocationstart", function() {
     console.log("user location started")
 });
 
-geoLocateController.on("geolocate", function(data) {
-    userLat = data.coords.latitude;
-    userLon = data.coords.longitude;
-    if(data.coords.speed != null){
-        userSpeed = data.coords.speed;
-    }
-    userGEO = {"geometry": {"type": "Point", "coordinates": [userLon, userLat]}, "type": "Feature", "properties": {}};
-});
-
 map.on('load', function () {
     // periodical events
-    window.setInterval(function() {
-        // update user location with geo data
-        map.getSource('user').setData(userGEO);
+    geoLocateController.on("geolocate", function(data) {
+        // get user latitude and longitude
+        userLat = data.coords.latitude;
+        userLon = data.coords.longitude;
+        // get user speed when available
+        if(data.coords.speed != null){
+            userSpeed = data.coords.speed;
+        }
 
-        // update zoom level based on speed
+        // update source and variables
+        $.each(dataSource.features, function (key, val) {
+            val.properties.distance = turf.distance(val.geometry.coordinates, [userLon, userLat]);
+        });
+        map.getSource('locationpoints').setData(dataSource);
         currentZoom = getZoomFromSpeed(userSpeed, defaultZoom);
-
-        // set action radius based on speed
         actionRadius = getRadiusFromSpeed(userSpeed, responseTime);
 
+        // new filter for locations
+        relevantLocations = map.querySourceFeatures('locationpoints',{filter:["<", "distance", actionRadius]});
+        console.log(relevantLocations);
+
         // filter locations within radius of user
-        let bbox = calculateBBox(userLat, userLon, actionRadius);
-        relevantLocations = map.queryRenderedFeatures(bbox, {layers: ['locations-target']});
         let inclusiveFilter = relevantLocations.reduce(function(memo, relevantLocations) {
             memo.push(relevantLocations.properties.Location);
             return memo;
@@ -82,22 +87,20 @@ map.on('load', function () {
         map.setFilter("locations-highlighted", ["all", inclusiveFilter, categoryFilter]);
         map.setFilter("markers", ["all", exclusiveFilter, categoryFilter]);
 
-        // detect if a new item came in range and send a notification
+        // send notifications for new markers in the area
         if(oldRelevantLocations.length > 0) {
             let joeysList = [];
             for (let index = 0; index < oldRelevantLocations.length; index++) {
                 joeysList.push(oldRelevantLocations[index].properties.Location)
             }
-            console.log(relevantLocations.length, joeysList.length);
             for (let index = 0; index < relevantLocations.length; index++) {
                 if(joeysList.includes(relevantLocations[index].properties.Location) === false){
                     sendNotifications(relevantLocations[index]);
-                    console.log(relevantLocations[index].properties.Location);
                 }
             }
         }
         oldRelevantLocations = relevantLocations;
-    }, refreshRate);
+    });
 
     // load and add images
     map.loadImage('images/intelin.png', function(error,image){
@@ -121,11 +124,9 @@ map.on('load', function () {
     });
 
     // add data sources for user location and points of interest
-    map.addSource('user', { type: 'geojson', data: userGEO });
-
     map.addSource('locationpoints', {
         type: 'geojson',
-        data: './GeoJason.geojson'
+        data: dataSource
     });
     // add map layers for points of interest coordinates and points of interest within user range
     map.addLayer({
@@ -239,7 +240,7 @@ function getRadiusFromSpeed(speed, responseTime){
     } else {
         multiplier = 24;
     }
-    radius = responseTime * multiplier;
+    radius = (responseTime * multiplier) / 1000;
     return(radius);
 }
 

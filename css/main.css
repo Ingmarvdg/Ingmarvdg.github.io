@@ -20,3 +20,9 @@ a {
 .h1 {
   border-bottom:1px solid #c9c8c7;
 }
+
+html, body, #map {
+  height: 700px;
+  margin: 0;
+  padding: 0;
+}
