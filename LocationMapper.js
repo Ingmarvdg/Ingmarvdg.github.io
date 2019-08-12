@@ -103,24 +103,34 @@ map.on('load', function () {
     });
 
     // load and add images
-    map.loadImage('images/intelin.png', function(error,image){
+    map.loadImage('images/finelightbluein.png', function(error,image){
         if(error) throw error;
-        map.addImage('IIntel', image)
+        map.addImage('Ifine', image)
     });
 
-    map.loadImage('images/intelout.png', function(error,image){
+    map.loadImage('images/finelightblueout.png', function(error,image){
         if(error) throw error;
-        map.addImage('OIntel', image)
+        map.addImage('Ofine', image)
     });
 
-    map.loadImage('images/actionin.png', function(error,image){
+    map.loadImage('images/moduleinorangein.png', function(error,image){
         if(error) throw error;
-        map.addImage('IAction', image)
+        map.addImage('Imodule', image)
     });
 
-    map.loadImage('images/actionout.png', function(error,image){
+    map.loadImage('images/moduleinorangeout.png', function(error,image){
         if(error) throw error;
-        map.addImage('OAction', image)
+        map.addImage('Omodule', image)
+    });
+
+    map.loadImage('images/loilightgreenin.png', function(error,image){
+        if(error) throw error;
+        map.addImage('Iloi', image)
+    });
+
+    map.loadImage('images/loilightgreenout.png', function(error,image){
+        if(error) throw error;
+        map.addImage('Oloi', image)
     });
 
     // add data sources for user location and points of interest
@@ -145,7 +155,7 @@ map.on('load', function () {
         "type":"symbol",
         "source": "locationpoints",
         "layout":{
-            "icon-image": 'O'+ "{Category}",
+            "icon-image": 'O'+ "{Prioriteit}",
             "icon-allow-overlap":true,
             "icon-ignore-placement":true,
             "icon-padding":0,
@@ -161,11 +171,11 @@ map.on('load', function () {
         "type":"symbol",
         "source": "locationpoints",
         "layout":{
-            "icon-image": 'I'+ "{Category}",
+            "icon-image": 'I'+ "{Prioriteit}",
             "icon-allow-overlap":true,
             "icon-ignore-placement":true,
             "icon-padding":0,
-            "icon-size":0.3,
+            "icon-size":0.35,
 
             "text-size":10
         },
@@ -257,6 +267,46 @@ function userToCategoryFilter(userFilter){
     return filter;
 }
 
+$.notify.addStyle("metro", {
+    html:
+        "<div>" +
+        "<div class='image' data-notify-html='image'/>" +
+        "<div class='text-wrapper'>" +
+        "<div class='title' data-notify-html='title'/>" +
+        "<div class='text' data-notify-html='text'/>" +
+        "</div>" +
+        "</div>",
+    classes: {
+        error: {
+            "color": "#fafafa !important",
+            "background-color": "#F71919",
+            "border": "1px solid #FF0026"
+        },
+        success: {
+            "background-color": "#32CD32",
+            "border": "1px solid #4DB149"
+        },
+        info: {
+            "color": "#fafafa !important",
+            "background-color": "#1E90FF",
+            "border": "1px solid #1E90FF"
+        },
+        warning: {
+            "background-color": "#FAFA47",
+            "border": "1px solid #EEEE45"
+        },
+        black: {
+            "color": "#fafafa !important",
+            "background-color": "#333",
+            "border": "1px solid #000"
+        },
+        white: {
+            "background-color": "#f1f1f1",
+            "border": "1px solid #ddd"
+        }
+    }
+});
+
 function sendNotifications(feature) {
     let notifTitle = feature.properties.Category + " in de buurt!";
 
@@ -270,6 +320,12 @@ function sendNotifications(feature) {
         }
     };
     //new Notification(notifTitle, options);
-    $.notify("helloworld")
+
+    $.notify(notifTitle + "\n" + feature.properties.Subject, "info", {
+        style: 'metro',
+        autoHide: false,
+        clickToHide: true,
+
+    });
 }
 
