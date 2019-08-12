@@ -133,6 +133,16 @@ map.on('load', function () {
         map.addImage('Oloi', image)
     });
 
+    map.loadImage('images/presentation.png', function(error,image){
+        if(error) throw error;
+        map.addImage('Opresentation', image)
+    });
+
+    map.loadImage('images/presentation.png', function(error,image){
+        if(error) throw error;
+        map.addImage('Ipresentation', image)
+    });
+
     // add data sources for user location and points of interest
     map.addSource('locationpoints', {
         type: 'geojson',
@@ -321,10 +331,11 @@ function sendNotifications(feature) {
     };
     //new Notification(notifTitle, options);
 
-    $.notify(notifTitle + "\n" + feature.properties.Subject, "info", {
+    $(".navbar").notify("Intel in de buurt!" + "\n" + "Verdachte auto", "info", {
         style: 'metro',
         autoHide: false,
         clickToHide: true,
+        position: "bottom"
 
     });
 }
