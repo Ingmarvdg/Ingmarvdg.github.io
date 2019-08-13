@@ -143,12 +143,12 @@ map.on('load', function () {
         map.addImage('Oloi', image)
     });
 
-    map.loadImage('images/presentation.png', function(error,image){
+    map.loadImage('images/presentationout.png', function(error,image){
         if(error) throw error;
         map.addImage('Opresentation', image)
     });
 
-    map.loadImage('images/presentation.png', function(error,image){
+    map.loadImage('images/presentationn.png', function(error,image){
         if(error) throw error;
         map.addImage('Ipresentation', image)
     });
