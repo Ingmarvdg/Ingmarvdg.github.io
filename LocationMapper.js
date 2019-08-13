@@ -44,9 +44,9 @@ Notification.requestPermission(function(status) {
 });
 
 // set filter for categories, now only done at setup
-// get filter settings from cookies
-if(Cookies.get('filter settings')){
-    userFilter = Cookies.get('filter settings');
+// get filter settings from local storage
+if(localStorage.getItem('filter-settings')){
+    userFilter = localStorage.getItem('filter-settings');
 }
 let categoryFilter = userToCategoryFilter(userFilter);
 
@@ -57,6 +57,13 @@ geoLocateController.on("trackuserlocationstart", function() {
 
 
 map.on('load', function () {
+
+    // add data sources for user location and points of interest
+    map.addSource('locationpoints', {
+        type: 'geojson',
+        data: dataSource
+    });
+
     // periodical events
     geoLocateController._geolocateButton.click();
     geoLocateController.on("geolocate", function(data) {
@@ -103,13 +110,9 @@ map.on('load', function () {
                 }
             }
         }
-
-        // filter for categories and save set to cookies
-        // create cookie for filtered locations list
-        Cookies.remove('filtered locations', {path: '' });
-        filteredLocations = map.querySourceFeatures('locationpoints',{filter: categoryFilter});
-        Cookies.set('filtered locations', filteredLocations, {path: '' });
         oldRelevantLocations = relevantLocations;
+        let stringedSource = JSON.stringify(dataSource);
+        setLocalStorage('locations-list', stringedSource);
     });
 
     // load and add images
@@ -153,11 +156,6 @@ map.on('load', function () {
         map.addImage('Ipresentation', image)
     });
 
-    // add data sources for user location and points of interest
-    map.addSource('locationpoints', {
-        type: 'geojson',
-        data: dataSource
-    });
     // add map layers for points of interest coordinates and points of interest within user range
     map.addLayer({
         "id": "locations-target",
@@ -358,5 +356,11 @@ function sendNotifications(feature) {
         position: "bottom"
 
     });
+}
+
+function setLocalStorage(name, locations){
+    localStorage.removeItem(name);
+    localStorage.setItem(name,locations);
+    console.log(localStorage.getItem(name));
 }
 

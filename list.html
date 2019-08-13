@@ -31,12 +31,10 @@
   </nav>
 
   <!-- Page Content -->
-  <div class="container">
-
     <div class="row">
 
       <!-- Location Entries Column -->
-      <div class="col-md">
+      <div class="col-md locations-list">
 
         <h1 class="my-4 text-center">Locaties</h1>
         <!-- <h2 class="my-4 text-center">Binnen <p id="demo"></p> km</h2> -->
@@ -65,16 +63,6 @@
           </div>
 
         <!-- Location Post -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h2 class="card-title">Verdachte auto</h2>
-            <p class="card-text" id="locaties_adres">Smedestraat 2, Heerlen</p>
-            <p class="card-text" id="afstand"> 0.2 km</p>
-          </div>
-          <div class="card-footer text-muted">
-            Posted on January 1, 2017
-          </div>
-        </div>
 
         <!-- Location Post -->
         <div class="card mb-4">
@@ -110,12 +98,12 @@
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Custom JavaScript -->
   <script src="js/script.js"></script>
-
-
+  <script src="ListView.js"></script>
 </body>
 
 </html>
