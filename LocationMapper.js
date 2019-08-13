@@ -77,7 +77,7 @@ map.on('load', function () {
 
         // update source and variables
         $.each(dataSource.features, function (key, val) {
-            val.properties.distance = turf.distance(val.geometry.coordinates, [userLon, userLat]);
+            val.properties.distance = Math.round(turf.distance(val.geometry.coordinates, [userLon, userLat]) * 100) / 100;
         });
         map.getSource('locationpoints').setData(dataSource);
         currentZoom = getZoomFromSpeed(userSpeed, defaultZoom);
@@ -224,12 +224,12 @@ map.on('load', function () {
                 '<p><button onclick= completeTask()>Taak voltooid</button></p>'
 
     ).addTo(map);
-        console.log(feature.properties)
     });
 });
 
 function completeTask(){
-    console.log("Completed")
+    console.log("Completed");
+    $('.mapboxgl-popup-content').addClass('completed-task');
 }
 
 // takes user location+radius and returns pixel values of bound box coordinates
@@ -291,7 +291,6 @@ function userToCategoryFilter(userFilter){
     if (userFilter.module === true){
         filter.push("module")
     }
-    console.log(filter);
     return filter;
 }
 
@@ -361,6 +360,5 @@ function sendNotifications(feature) {
 function setLocalStorage(name, locations){
     localStorage.removeItem(name);
     localStorage.setItem(name,locations);
-    console.log(localStorage.getItem(name));
 }
 

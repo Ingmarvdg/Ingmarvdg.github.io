@@ -7,6 +7,10 @@ body {
   padding-top: 56px;
 }
 
+.completed-task {
+    background: #1c7430;
+}
+
 a {
   color: #c9c8c7;
   margin-right: 8%;

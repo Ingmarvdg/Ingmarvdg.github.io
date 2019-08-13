@@ -1,7 +1,6 @@
 let locations = localStorage.getItem('locations-list');
 locations = JSON.parse(locations);
 let userFilter = {fines: true, module: true, loi: true};
-userFilter = localStorage.getItem("filter-settings");
 console.log(userFilter);
 
 // filtering which locations
@@ -18,15 +17,33 @@ $.each(locations.features, function(key, val) {
     }
 });
 
+wantedData.sort(function(a, b){
+    return (a.properties.distance - b.properties.distance)
+});
+
 $.each(wantedData, function (key, val) {
     $( ".locations-list" ).append( "<div class=\"card mb-4\">\n" +
         "<div class=\"card-body\">\n" +
-        "<h2 class=\"card-title\">Verdachte auto</h2>\n" +
-        "<p class=\"card-text\" id=\"locaties_adres\">Smedestraat 2, Heerlen</p>\n" +
-        "<p class=\"card-text\" id=\"afstand\"> 0.2 km</p>\n" +
+        "<h2 class=\"card-title\">" + val.properties.Subject + "</h2>\n" +
+        "<p class=\"card-text\" id=\"locaties_adres\">"+ val.properties.Date +"</p>\n" +
+        "<p class=\"card-text\" id=\"afstand\">"+ val.properties.distance + " KM </p>\n" +
         "</div>\n" +
         "<div class=\"card-footer text-muted\">\n" +
         "Posted on January 1, 2017\n" +
         "</div>\n" +
-        "</div>" );
+        "</div>"
+    );
 });
+
+var sort_by = function(field, reverse, primer){
+
+    var key = primer ?
+        function(x) {return primer(x[field])} :
+        function(x) {return x[field]};
+
+    reverse = !reverse ? 1 : -1;
+
+    return function (a, b) {
+        return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+    }
+}
