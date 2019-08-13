@@ -214,6 +214,7 @@ map.on('load', function () {
 
         let feature = features[0];
 
+
         let popup = new mapboxgl.Popup({ offset: [0, -15] })
             .setLngLat(feature.geometry.coordinates)
             .setHTML(
@@ -221,11 +222,17 @@ map.on('load', function () {
                 '<h3>'+ feature.properties.Subject + '</h3>' +
                 '<p><b>Datum: \</b>' + feature.properties.Date + '</p>' +
                 '<p><b>Locatie: \</b>' + feature.properties.Location + '</p>' +
-                '<p><b>Beschrijving: \</b>' + feature.properties.Description + '</p>'
-            )
-            .addTo(map);
+                '<p><b>Beschrijving: \</b>' + feature.properties.Description + '</p>' +
+                '<p><button onclick= completeTask()>Taak voltooid</button></p>'
+
+    ).addTo(map);
+        console.log(feature.properties)
     });
 });
+
+function completeTask(){
+    console.log("Completed")
+}
 
 // takes user location+radius and returns pixel values of bound box coordinates
 function calculateBBox(userLat, userLon, radius){

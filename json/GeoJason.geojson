@@ -5,11 +5,11 @@
     "type": "Feature",
     "geometry": {
        "type": "Point",
-       "coordinates":  [ 5.9662,50.88928 ]
+       "coordinates":  [ 5.97357,50.88772 ]
     },
     "properties": {
     "City":"Heerlen",
-    "Location":"Eikenderweg 1",
+    "Location":"Schinkelstraat 20",
     "Date":"2-8-2019",
     "Time":"15:40",
     "Subject":"Verdachte auto",
@@ -148,10 +148,10 @@
     "Location":"Geerstraat 60",
     "Date":"1-8-2019",
     "Time":"06:50",
-    "Subject":"Verkeersongeluk",
-    "Description":"There has been a traffic accident at the Geerstraat. A car crashed into a bike.",
-    "Prioriteit":"module",
-    "Category":"Action"
+    "Subject":"Open boete",
+    "Description":"Openstaande boete van 30 euro.",
+    "Prioriteit":"fine",
+    "Category":"Intel"
     }
   },
   {
@@ -209,11 +209,11 @@
     "type": "Feature",
     "geometry": {
        "type": "Point",
-       "coordinates":  [ 5.9734685,50.8819818 ]
+       "coordinates":  [ 5.985048,50.8914844 ]
     },
     "properties": {
     "City":"Heerlen",
-    "Location":"Oude Lindestraat 232",
+    "Location":"Heuvelweg 5",
     "Date":"Geen datum",
     "Time":".",
     "Subject":"Open boete",
