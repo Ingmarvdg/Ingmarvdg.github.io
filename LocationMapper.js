@@ -200,6 +200,8 @@ map.on('load', function () {
         "filter": ["in", "Location", ""]
     });
 
+
+
     // allow for popup when clicking on marker
     map.on('click', function(e) {
         let features = map.queryRenderedFeatures(e.point, {
@@ -221,16 +223,27 @@ map.on('load', function () {
                 '<p><b>Datum: \</b>' + feature.properties.Date + '</p>' +
                 '<p><b>Locatie: \</b>' + feature.properties.Location + '</p>' +
                 '<p><b>Beschrijving: \</b>' + feature.properties.Description + '</p>' +
-                '<p><button onclick= completeTask()>Taak voltooid</button></p>'
+                '<p><button type="submit" class="stylebutton" onclick= completeTask() >Taak voltooid</button></p>'
 
     ).addTo(map);
     });
 });
 
+<<<<<<< Updated upstream
 function completeTask(){
     console.log("Completed");
     $('.mapboxgl-popup-content').addClass('completed-task');
+=======
+function completeTask() {
+    console.log("Completed")
+    $('.mapboxgl-popup-content').css('background', "c72727");
+
+>>>>>>> Stashed changes
 }
+
+
+
+
 
 // takes user location+radius and returns pixel values of bound box coordinates
 function calculateBBox(userLat, userLon, radius){
