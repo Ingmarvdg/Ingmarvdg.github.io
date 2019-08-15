@@ -229,16 +229,9 @@ map.on('load', function () {
     });
 });
 
-<<<<<<< Updated upstream
 function completeTask(){
     console.log("Completed");
     $('.mapboxgl-popup-content').addClass('completed-task');
-=======
-function completeTask() {
-    console.log("Completed")
-    $('.mapboxgl-popup-content').css('background', "c72727");
-
->>>>>>> Stashed changes
 }
 
 
